@@ -1,0 +1,27 @@
+write::Start (new Collection.Add (*args))
+
+onload start
+load.get (client.newIP)
+load.info ("Connecting the $#client.newIP")
+ifstate (load.get.status == true){
+load.info ("Connected, Please wait few minutes to Download files isk beatmap from connected server")
+dl<Downloader>.write(client.newIP+"/beatmap")
+elseif(dl<Downloader>.status == true){
+load.unzip (dl<Downloader>.files ("beatmap.zip")).then_unzipped(open (menu))
+} else {
+load.error ("Connected but download error due to $#dl<Downloader>.errorlog")
+}
+}
+onload end
+onmenuload start
+Load<3D>::Sratch('/i3d')
+tap(3d.home, open (menu))
+tap(3d.downloads, open(dl))
+tap(3d.play, open (play))
+tap(3d.quit, quit (client + game))
+esycard<Select>("/isong")
+play(Selected).value(newline, "### Game running this song", Selected)
+playnote(notes).value(newline, "### Game running this song", Selected)
+playonlyrics(lyrics).value(newline, "### Game running this song", Selected)
+
+onmenuload end
